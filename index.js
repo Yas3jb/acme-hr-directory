@@ -6,6 +6,11 @@ const client = new pg.Client(
   process.env.DATABASE_URL || "postgres://localhost/acme_hr_directory_db"
 );
 
+// parse the body into JS Objects
+app.use(express.json());
+// Log the requests as they come in
+app.use(require("morgan")("dev"));
+
 // Create init function
 const init = async () => {
   await client.connect();
