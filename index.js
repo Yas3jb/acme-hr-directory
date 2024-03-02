@@ -75,6 +75,20 @@ app.put("/api/employees/:id", async (req, res, next) => {
   }
 });
 
+// DELETE EMPLOYEES - DELETE
+app.delete("/api/employees/:id", async (req, res, next) => {
+  try {
+    const SQL = `
+        DELETE FROM employees
+        WHERE id= $1
+        `;
+    const response = await client.query(SQL, [req.params.id]);
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // Create init function
 const init = async () => {
   await client.connect();
