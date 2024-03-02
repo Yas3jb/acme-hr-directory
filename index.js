@@ -20,6 +20,7 @@ app.get("/api/departments", async (req, res) => {
     const response = await client.query(SQL);
     res.send(response.rows);
   } catch (error) {
+    // error handling
     res.status(500).json({ error: error.message });
   }
 });
@@ -33,6 +34,7 @@ app.get("/api/employees", async (req, res) => {
     const response = await client.query(SQL);
     res.send(response.rows);
   } catch (error) {
+    // error handling
     res.status(500).json({ error: error.message });
   }
 });
@@ -51,6 +53,7 @@ app.post("/api/employees", async (req, res) => {
     ]);
     res.send(response.rows[0]);
   } catch (error) {
+    // error handling
     res.status(500).json({ error: error.message });
   }
 });
@@ -71,6 +74,7 @@ app.put("/api/employees/:id", async (req, res) => {
     ]);
     res.send(response.rows[0]);
   } catch (error) {
+    // error handling
     res.status(500).json({ error: error.message });
   }
 });
@@ -85,6 +89,7 @@ app.delete("/api/employees/:id", async (req, res) => {
     const response = await client.query(SQL, [req.params.id]);
     res.sendStatus(204);
   } catch (error) {
+    // error handling
     res.status(500).json({ error: error.message });
   }
 });
