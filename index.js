@@ -15,7 +15,7 @@ app.use(require("morgan")("dev"));
 app.get("/api/departments", async (req, res, next) => {
   try {
     const SQL = `
-          SELECT * FROM departments
+          SELECT * FROM departments 
           `;
     const response = await client.query(SQL);
     res.send(response.rows);
@@ -32,6 +32,24 @@ app.get("/api/employees", async (req, res, next) => {
         `;
     const response = await client.query(SQL);
     res.send(response.rows);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// CREATE EMPLOYEES - POST
+app.post("/api/employees", async (req, res, next) => {
+  try {
+    const SQL = `
+          INSERT INTO employees(name, department_id)
+          VALUES($1, $2)
+          RETURNING *
+          `;
+    const response = await client.query(SQL, [
+      req.body.name,
+      req.body.department_id,
+    ]);
+    res.send(response.rows[0]);
   } catch (error) {
     next(error);
   }
