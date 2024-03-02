@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(require("morgan")("dev"));
 
 // READ DEPARTMENTS - GET
-app.get("/api/departments", async (req, res, next) => {
+app.get("/api/departments", async (req, res) => {
   try {
     const SQL = `
           SELECT * FROM departments 
@@ -20,12 +20,12 @@ app.get("/api/departments", async (req, res, next) => {
     const response = await client.query(SQL);
     res.send(response.rows);
   } catch (error) {
-    next(error);
+    res.status(500).json({ error: error.message });
   }
 });
 
 // READ EMPLOYEES - GET
-app.get("/api/employees", async (req, res, next) => {
+app.get("/api/employees", async (req, res) => {
   try {
     const SQL = `
         SELECT * FROM employees ORDER BY created_at DESC;
@@ -33,12 +33,12 @@ app.get("/api/employees", async (req, res, next) => {
     const response = await client.query(SQL);
     res.send(response.rows);
   } catch (error) {
-    next(error);
+    res.status(500).json({ error: error.message });
   }
 });
 
 // CREATE EMPLOYEES - POST
-app.post("/api/employees", async (req, res, next) => {
+app.post("/api/employees", async (req, res) => {
   try {
     const SQL = `
           INSERT INTO employees(name, department_id)
@@ -51,12 +51,12 @@ app.post("/api/employees", async (req, res, next) => {
     ]);
     res.send(response.rows[0]);
   } catch (error) {
-    next(error);
+    res.status(500).json({ error: error.message });
   }
 });
 
 // UPDATE EMPLOYEES - PUT
-app.put("/api/employees/:id", async (req, res, next) => {
+app.put("/api/employees/:id", async (req, res) => {
   try {
     const SQL = `
         UPDATE employees
@@ -71,12 +71,12 @@ app.put("/api/employees/:id", async (req, res, next) => {
     ]);
     res.send(response.rows[0]);
   } catch (error) {
-    next(error);
+    res.status(500).json({ error: error.message });
   }
 });
 
 // DELETE EMPLOYEES - DELETE
-app.delete("/api/employees/:id", async (req, res, next) => {
+app.delete("/api/employees/:id", async (req, res) => {
   try {
     const SQL = `
         DELETE FROM employees
@@ -85,7 +85,7 @@ app.delete("/api/employees/:id", async (req, res, next) => {
     const response = await client.query(SQL, [req.params.id]);
     res.sendStatus(204);
   } catch (error) {
-    next(error);
+    res.status(500).json({ error: error.message });
   }
 });
 
